@@ -1,11 +1,23 @@
 <HTML!>
     <head>
+
     </head>
 
     <body>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+            //var socket = io.connect();
+            socket.on('connect', function(msg) {
+                socket.emit('my event', {data: 'I\'m connected!'});
+                console.log("we have connection!!");
+            });
+        </script>
         <h1>HELLO WORLDDDD</h1>
-    </body>
 
+
+
+    </body>
 
 
 </HTML!>
