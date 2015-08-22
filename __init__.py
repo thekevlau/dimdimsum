@@ -1,9 +1,9 @@
 """
 WSGI webapp using Flask
 """
-from gevent import monkey
+"""from gevent import monkey
 monkey.patch_all()
-
+"""
 from flask import Flask
 from flask import redirect, render_template, url_for, jsonify, request, make_response
 from flask.ext.socketio import SocketIO, send, emit
