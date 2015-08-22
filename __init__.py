@@ -22,7 +22,16 @@ def index():
 
 @socketio.on('my event')
 def handle_my_custom_event(json):
+    """does this even go anywhere?"""
+    """why does having an emit function before the print statement, void the print statement?"""
+    print('received message: ' + json['data'])
     emit('my response', m)
+
+"""
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    emit('my response', m)
+"""
 
 if __name__ == '__main__':
     socketio.run(app)
