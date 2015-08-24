@@ -7,9 +7,15 @@ monkey.patch_all()
 from flask import Flask
 from flask import redirect, render_template, url_for, jsonify, request, make_response
 from flask.ext.socketio import SocketIO, send, emit
+from flask.ext.sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
+app.config.from_object('config')
+db = SQLAlchemy(app)
 socketio = SocketIO(app)
+
+
 from app import views
 
 m = {

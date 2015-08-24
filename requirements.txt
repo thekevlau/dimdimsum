@@ -1,5 +1,6 @@
 Flask==0.10.1
 Flask-SocketIO==0.6.0
+Flask-SQLAlchemy==2.0
 Jinja2==2.7.1
 MarkupSafe==0.18
 Werkzeug==0.9.4
@@ -8,3 +9,6 @@ wsgiref==0.1.2
 gevent==1.0.2
 gevent-socketio==0.3.6
 gevent-websocket==0.9.5
+SQLAlchemy==1.0.8
+sqlalchemy-migrate==0.9.7
+sqlparse==0.1.16
