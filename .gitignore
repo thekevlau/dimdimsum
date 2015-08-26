@@ -1,1 +1,5 @@
 dds-env
+node_modules
+.DS_STORE
+dimdimsum/static/bundle.js
+*.pyc

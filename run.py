@@ -1,3 +1,2 @@
-from app import app, socketio
-socketio.run(app)
-#app.run(debug=True)
+from dimdimsum import start
+start()
