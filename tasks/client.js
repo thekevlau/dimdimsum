@@ -15,7 +15,11 @@ var webpackConfig = {
             {
                 test: /\.jsx?$/,
                 include: path.resolve(__dirname, '../src/'),
-                loader: 'babel-loader?optional[]=runtime&optional[]=es7.asyncFunctions'
+                loader: 'babel-loader',
+                query: {
+                    optional: ['runtime'],
+                    stage: 0
+                }
             }
         ]
     },
