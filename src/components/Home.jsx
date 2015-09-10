@@ -51,12 +51,7 @@ const Home = React.createClass({
         });
     },
 
-    test: async () => {
-        return 5;
-    },
-
     render: function() {
-        console.log(this.props);
         let dialog, buttons;
         if (this.state.createDialog || this.state.joinDialog) {
             dialog = (
