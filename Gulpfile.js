@@ -12,7 +12,7 @@ var watch = require('watch');
 var currentProcess;
 
 gulp.task('start', ['watch:client'], function () {
-    watch.watchTree('./' + process.env.APP_NAME + '/', { ignoreDotFiles: true },
+    watch.watchTree('./' + process.env.APP_NAME + '/static/js', { ignoreDotFiles: true },
             function (file) {
         if (currentProcess) {
             gutil.log('Restarting python server...');
