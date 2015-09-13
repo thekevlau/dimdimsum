@@ -4,25 +4,33 @@ import './polyfills/ObjectPolyfills';
 import './polyfills/StringPolyfills';
 
 import AppRoutes from './Routes';
-import InternalActionMiddleware from './middleware/InternalActionMiddleware';
+import { applyMiddleware, createStore } from 'redux';
+import ConnectionActionMiddleware from './middleware/ConnectionActionMiddleware';
+import LoggerMiddleware from './middleware/LoggerMiddleware';
 import { Provider } from 'react-redux';
 import React from 'react';
 import Reducers from './reducers';
-import { applyMiddleware, createStore } from 'redux';
 import Router from 'react-router';
+
+window.__DEBUG__ = true;
 
 const router = Router.create({
     routes: AppRoutes,
     location: Router.HistoryLocation
 });
 
-const store = applyMiddleware(InternalActionMiddleware)(createStore)
-        (Reducers, window.__INITIAL_STORE_STATE__ || {
+const store = applyMiddleware(
+    LoggerMiddleware,
+    ConnectionActionMiddleware
+)(createStore)(Reducers, window.__INITIAL_STORE_STATE__ || {
     gameState: {
         self: null,
         roomName: null,
         players: {},
-        hostPlayer: null
+        hostName: null
+    },
+    errorState: {
+        errors: []
     }
 });
 
@@ -31,7 +39,7 @@ router.run((Handler, state) => {
     // Remove function wrap around handler with react 0.14.
     const appRoot = (
         <Provider store={store}>
-            { () => <Handler {...state} /> }
+            { () => <Handler {...state} store={store} /> }
         </Provider>
     );
 

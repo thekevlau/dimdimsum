@@ -2,10 +2,11 @@ export default class Connection {
     constructor(conn=null) {
         this.connection = conn;
         this.queue = [];
+        this.label = this.connection.label;
 
-        this.on('open', () => {
+        this.connection.on('open', () => {
             this.queue.forEach(args => {
-                this.send.apply(this.connection, args);
+                this.send.apply(this, args);
             });
         });
     }
@@ -24,9 +25,5 @@ export default class Connection {
 
     close() {
         return this.connection.close.apply(this.connection, arguments);
-    }
-
-    getLabel() {
-        return this.connection.label;
     }
 }

@@ -1,8 +1,19 @@
-import Connection from '../utils/Connection';
-
-export default class Player extends Connection {
+export default class Player {
     constructor(opts={}) {
-        super(opts.connection || null);
         this.name = opts.name || 'Unknown';
+    }
+
+    getData() {
+        return {
+            name: this.name
+        };
+    }
+
+    set(data) {
+        return new Player({...this.getData(), ...data});
+    }
+
+    clone() {
+        return this.set({});
     }
 }

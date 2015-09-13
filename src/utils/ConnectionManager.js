@@ -1,5 +1,6 @@
 import Connection from './Connection';
 import EventEmittor from 'events';
+import Logger from '../utils/Logger';
 import Peer from 'peerjs';
 
 class ConnectionManager extends EventEmittor {
@@ -60,7 +61,10 @@ class ConnectionManager extends EventEmittor {
             this.emit('peerNewConnection', conn, peer, ctype);
         });
 
-        peer.on('close', () => this.emit('peerClose', peer, ctype));
+        peer.on('close', () => {
+            Logger.debug(`Peer close`);
+            this.emit('peerClose', peer, ctype);
+        });
 
         peer.on('disconnected', () => {
             if (!peer.destroyed) {
@@ -69,7 +73,10 @@ class ConnectionManager extends EventEmittor {
             this.emit('peerDisconnected', peer, ctype);
         });
 
-        peer.on('error', err => this.emit('peerError', err, peer, ctype));
+        peer.on('error', err => {
+            Logger.debug(`Peer error:`, err.type, err);
+            this.emit('peerError', err, peer, ctype);
+        });
     }
 
     setupConnectionHandlers(conn) {
@@ -79,16 +86,29 @@ class ConnectionManager extends EventEmittor {
             throw new Error('Connection object is null.');
         }
 
-        conn.on('data', data => this.emit('connectionData', data, conn, ctype));
+        conn.on('data', data => {
+            Logger.debug(`Recieving data from connection ${conn.label}:`, data);
+            this.emit('connectionData', data, conn, ctype);
+        });
 
-        conn.on('close', () => this.emit('connectionClose', conn, ctype));
+        conn.on('close', () => {
+            Logger.debug(`Connection ${conn.label} closing`);
+            this.emit('connectionClose', conn, ctype)
+        });
 
-        conn.on('error', () => this.emit('connectionError', conn, ctype));
+        conn.on('error', err => {
+            Logger.debug(`Connection ${conn.label} error:`, err.type, err);
+            this.emit('connectionError', err, conn, ctype)
+        });
     }
 
-    send(data, to) {
+    send(to, data, exclude) {
+        Logger.debug('Sending to', to, data, exclude);
         if (to === 'ALL') {
             for (let id in this.clients) {
+                if (id === exclude) {
+                    continue;
+                }
                 this.clients[id].send(data);
             }
         }
@@ -98,6 +118,10 @@ class ConnectionManager extends EventEmittor {
         else {
             this.clients[to].send(data);
         }
+    }
+
+    close(id) {
+        clients[id].close();
     }
 };
 
