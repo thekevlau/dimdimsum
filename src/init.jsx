@@ -1,7 +1,6 @@
 import 'babel/polyfill';
 import './polyfills/ArrayPolyfills';
 import './polyfills/ObjectPolyfills';
-import './polyfills/StringPolyfills';
 
 import AppRoutes from './Routes';
 import { applyMiddleware, createStore } from 'redux';

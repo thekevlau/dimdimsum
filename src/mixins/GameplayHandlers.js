@@ -21,8 +21,10 @@ export default () => {
             handlers[id][actionType] = handler;
         },
 
-        unregisterGameplayHandler: function(actionType) {
-            delete handlers[id][actionType];
+        unregisterHandlers: function() {
+            Object.keys(handlers[id]).forEach(key => {
+                delete handlers[id][key];
+            })
         }
     };
 };

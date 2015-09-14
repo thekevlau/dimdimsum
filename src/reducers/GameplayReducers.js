@@ -20,6 +20,14 @@ export default (gameState = {}, action) => {
                 }
             };
 
+        case 'REMOVE_PLAYER':
+            const players = {...gameState.players};
+            delete players[action.name];
+            return {
+                ...gameState,
+                players
+            };
+
         case 'SET_PLAYER':
             if (!gameState[action.playerName]) {
                 throw new Error('Tried to set undefined player', action.playerName);

@@ -1,7 +1,7 @@
 import Connection from './Connection';
 import EventEmittor from 'events';
 import Logger from '../utils/Logger';
-import Peer from 'peerjs';
+import Peer from '../lib/peerjs';
 
 class ConnectionManager extends EventEmittor {
     constructor() {
@@ -24,10 +24,19 @@ class ConnectionManager extends EventEmittor {
             if (!roomName) {
                 throw new Error('If HOST, must provide room name.');
             }
-            this.peerObject = new Peer(roomName, {key: '7xab2qyfqwz2rzfr'});
+            this.peerObject = new Peer(roomName, {
+                host: 'young-spire-7644.herokuapp.com',
+                debug: 3,
+                secure: true
+            });
         }
+
         else if (ctype === 'CLIENT') {
-            this.peerObject = new Peer({key: '7xab2qyfqwz2rzfr'});
+            this.peerObject = new Peer({
+                host: 'young-spire-7644.herokuapp.com',
+                debug: 3,
+                secure: true
+            });
         }
 
         // Set up handlers for peer object.
@@ -41,6 +50,18 @@ class ConnectionManager extends EventEmittor {
             // Add host.
             this.host = conn;
         }
+    }
+
+    clear() {
+        Object.keys(this.clients).forEach(id => {
+            this.clients[id].close();
+        });
+        this.peerObject.close();
+
+        this.connectionType = null;
+        this.clients = {};
+        this.host = null;
+        this.peerObject = null;
     }
 
     setupPeerHandlers(peer) {
@@ -67,10 +88,7 @@ class ConnectionManager extends EventEmittor {
         });
 
         peer.on('disconnected', () => {
-            if (!peer.destroyed) {
-                peer.reconnect();
-            }
-            this.emit('peerDisconnected', peer, ctype);
+            peer.destroy();
         });
 
         peer.on('error', err => {
@@ -93,7 +111,10 @@ class ConnectionManager extends EventEmittor {
 
         conn.on('close', () => {
             Logger.debug(`Connection ${conn.label} closing`);
-            this.emit('connectionClose', conn, ctype)
+            delete this.clients[conn.label];
+            console.log('dleteting');
+            debugger;
+            this.emit('connectionClose', conn, ctype);
         });
 
         conn.on('error', err => {
@@ -122,6 +143,7 @@ class ConnectionManager extends EventEmittor {
 
     close(id) {
         clients[id].close();
+        delete clients[id];
     }
 };
 

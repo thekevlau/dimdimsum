@@ -69,5 +69,15 @@ export default {
             to,
             except
         };
+    },
+
+    sendRemovePlayer: function(to, name, except) {
+        return {
+            connectionAction: true,
+            type: 'CONNECTION_REMOVE_PLAYER',
+            name,
+            to,
+            except
+        };
     }
 };

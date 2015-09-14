@@ -39,6 +39,12 @@ export default store => next => action => {
                 }, action.except);
                 break;
 
+            case 'CONNECTION_REMOVE_PLAYER':
+                ConnectionManager.send(action.to, {
+                    name: action.name,
+                    type: action.type
+                }, action.except);
+                break;
         }
     }
     return next(action);

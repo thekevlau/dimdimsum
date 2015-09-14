@@ -20,6 +20,13 @@ export default {
         };
     },
 
+    removePlayer: function(name) {
+        return {
+            type: 'REMOVE_PLAYER',
+            name
+        };
+    },
+
     setPlayer: function(playerName, data) {
         return {
             type: 'PLAYER_DATA',

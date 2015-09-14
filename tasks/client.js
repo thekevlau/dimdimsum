@@ -15,6 +15,7 @@ var webpackConfig = {
             {
                 test: /\.jsx?$/,
                 include: path.resolve(__dirname, '../src/'),
+                exclude: path.resolve(__dirname, '../src/lib/'),
                 loader: 'babel-loader',
                 query: {
                     optional: ['runtime'],
