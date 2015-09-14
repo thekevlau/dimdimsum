@@ -4,6 +4,7 @@ import './polyfills/ObjectPolyfills';
 
 import AppRoutes from './Routes';
 import { applyMiddleware, createStore } from 'redux';
+import Connection from './components/Connection';
 import ConnectionActionMiddleware from './middleware/ConnectionActionMiddleware';
 import LoggerMiddleware from './middleware/LoggerMiddleware';
 import { Provider } from 'react-redux';
@@ -36,9 +37,15 @@ const store = applyMiddleware(
 // Run static init methods for components (used to fetch initial data).
 router.run((Handler, state) => {
     // Remove function wrap around handler with react 0.14.
+    const connectionWrapper = () => (
+        <Connection>
+            <Handler {...state} />
+        </Connection>
+    );
+
     const appRoot = (
         <Provider store={store}>
-            { () => <Handler {...state} store={store} /> }
+            {connectionWrapper}
         </Provider>
     );
 
