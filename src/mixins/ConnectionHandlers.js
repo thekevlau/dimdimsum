@@ -8,7 +8,7 @@ export default () => {
     handlers[id] = {};
 
     return {
-        handleGameplayData: function(action, connectionId) {
+        handleConnectionData: function(action, connectionId) {
             for (let component in handlers) {
                 if (!handlers[component][action.type]) {
                     continue;
@@ -17,14 +17,14 @@ export default () => {
             }
         },
 
-        registerGameplayHandler: function(actionType, handler) {
+        registerConnectionHandler: function(actionType, handler) {
             handlers[id][actionType] = handler;
         },
 
         unregisterHandlers: function() {
             Object.keys(handlers[id]).forEach(key => {
                 delete handlers[id][key];
-            })
+            });
         }
     };
 };

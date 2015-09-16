@@ -1,83 +1,37 @@
+import ActionUtils from '../utils/ActionUtils';
+import ConnectionManager from '../utils/ConnectionManager';
+import Logger from '../utils/Logger';
 // Actions ment to be sent over webRTC.
-export default {
-    sendError: function(to, message, except) {
-        return {
-            connectionAction: true,
-            type: 'CONNECTION_ERROR',
-            message,
-            to,
-            except
-        };
-    },
 
-    sendStringMessage: function(to, msg, except) {
-        return {
-            connectioAction: true,
-            type: 'CONNECTION_SEND_STRING_MESSAGE',
-            msg,
-            to,
-            except
-        };
-    },
+const handler = action => {
+    Logger.debug('Sending action', action);
+    ConnectionManager.send(action.to, {
+        type: action.type,
+        data: action.data
+    }, action.except);
+};
 
-    sendCreatePlayer: function(to, data, except) {
-        if (!data.name) {
-            throw new Error('Name must be given when creating a player');
-        }
-        return {
-            connectionAction: true,
-            type: 'CONNECTION_CREATE_PLAYER',
-            data,
-            to,
-            except
-        };
-    },
-
-    sendCreatePlayerMulti: function(to, playerDatas, except) {
-        playerDatas.forEach(data => {
-            if (!data.name) {
-                throw new Error('Name must be given when creating a player');
-            }
-        });
-
-        return {
-            connectionAction: true,
-            type: 'CONNECTION_CREATE_PLAYER_MULTI',
-            data: playerDatas,
-            to,
-            except
-        };
-
-    },
-
-    sendPlayerData: function(to, opts, except) {
-        return {
-            connectionAction: true,
-            type: 'CONNECTION_PLAYER_DATA',
-            data: opts.data,
-            playerName: opts.playerName,
-            to,
-            except
-        };
-    },
-
-    sendHostName: function(to, name, except) {
-        return {
-            connectionAction: true,
-            type: 'CONNECTION_HOST_NAME',
-            name,
-            to,
-            except
-        };
-    },
-
-    sendRemovePlayer: function(to, name, except) {
-        return {
-            connectionAction: true,
-            type: 'CONNECTION_REMOVE_PLAYER',
-            name,
-            to,
-            except
-        };
+const actions = {
+    sendError: handler,
+    sendCreatePlayer: handler,
+    sendCreatePlayerMulti: handler,
+    sendPlayerData: handler,
+    sendHostName: handler,
+    sendRemovePlayer: handler,
+    sendStart: handler,
+    sendUpdatePlayers: handler,
+    sendSetDeck: handler,
+    close: action => {
+        ConnectionManager.close(action.data)
     }
 };
+
+export default ActionUtils.generateConnectionActionCreators(actions);
+
+export const Reducers = (store, action) => {
+    const type = action.type.replace('connection', 'send');
+    if (actions[type]) {
+        return actions[type](action);
+    }
+};
+

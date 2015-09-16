@@ -27,7 +27,9 @@ const store = applyMiddleware(
         self: null,
         roomName: null,
         players: {},
-        hostName: null
+        hostName: null,
+        connectionType: null,
+        deck: []
     },
     errorState: {
         errors: []

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import ConnectionActions from '../actions/ConnectionActions';
 import GameplayActions from '../actions/GameplayActions';
+import Player from '../GameObjects/Player';
 import React from 'react/addons';
 import Router from 'react-router';
 
@@ -15,6 +16,10 @@ const Home = React.createClass({
             roomName: '',
             name: ''
         }
+    },
+
+    componentDidMount: function() {
+        this.props.clear();
     },
 
     createRoom: function() {
@@ -46,11 +51,13 @@ const Home = React.createClass({
         const dispatch = this.props.dispatch;
 
         // Set up self player object.
-        dispatch(GameplayActions.createSelf({
+        dispatch(GameplayActions.createSelf(new Player({
             name: this.state.name
-        }));
+        })));
         // Set room name.
         dispatch(GameplayActions.setRoomName(this.state.roomName));
+        // Set connection type.
+        dispatch(GameplayActions.setConnectionType(connectionType));
 
         // Setup general gameplay handlers.
         this.props.setupHandlers(connectionType, this.state.name);

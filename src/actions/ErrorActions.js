@@ -1,8 +1,9 @@
 export default {
-    error: function(message) {
+    error: function(message, fatal) {
         return {
             type: 'APP_ERROR',
-            message
+            message,
+            fatal: fatal === 'FATAL'
         };
     }
 };

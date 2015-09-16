@@ -11,9 +11,11 @@ class ConnectionManager extends EventEmittor {
         this.clients = {};
         this.host = null;
         this.peerObject = null;
+        this.initialized = false;
     }
 
     setup(ctype, roomName) {
+        this.initialized = true;
         if (this.peerObject) {
             this.peerObject.destroy();
         }
@@ -53,15 +55,20 @@ class ConnectionManager extends EventEmittor {
     }
 
     clear() {
+        if (!this.initialized) {
+            return;
+        }
+
         Object.keys(this.clients).forEach(id => {
             this.clients[id].close();
         });
-        this.peerObject.close();
+        this.peerObject.destroy();
 
         this.connectionType = null;
         this.clients = {};
         this.host = null;
         this.peerObject = null;
+        this.initialized = false;
     }
 
     setupPeerHandlers(peer) {
@@ -112,8 +119,6 @@ class ConnectionManager extends EventEmittor {
         conn.on('close', () => {
             Logger.debug(`Connection ${conn.label} closing`);
             delete this.clients[conn.label];
-            console.log('dleteting');
-            debugger;
             this.emit('connectionClose', conn, ctype);
         });
 

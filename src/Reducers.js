@@ -1,5 +1,5 @@
 import ErrorReducers from './reducers/ErrorReducers';
-import GameplayReducers from './reducers/GameplayReducers';
+import {Reducers as GameplayReducers} from './actions/GameplayActions';
 
 export default (state = {}, action) => {
     return {
