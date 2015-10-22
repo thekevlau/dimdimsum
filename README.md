@@ -18,15 +18,14 @@ To run on your local machine:
     pip install -r requirements.txt
     ```
 
-4. Compile frontend source.
+4. Install js dependencies:
     ```
     npm i
-    gulp compile:source
     ```
 
-5. Running the app
+5. Compile the frontend source, start the server and run the app
 
     ```
     # make sure virtualenv is running
-    python run.py
+    gulp start
     ```
