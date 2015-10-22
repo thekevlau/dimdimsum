@@ -23,7 +23,12 @@ To run on your local machine:
     npm i
     ```
 
-5. Compile the frontend source, start the server and run the app
+5. Install Gulp globally:
+    ```
+    npm install gulp -g
+    ```
+
+6. Compile the frontend source, start the server and run the app
 
     ```
     # make sure virtualenv is running
